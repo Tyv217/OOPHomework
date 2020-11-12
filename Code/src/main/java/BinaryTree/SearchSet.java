@@ -45,6 +45,7 @@ public class SearchSet {
         } else if (i > mHead.getValue()) {
             if (mHead.getRight() == null) {
                 BinaryTreeNode temp = new BinaryTreeNode(i);
+                temp.setLeft(mHead);
                 mHead.setRight(temp);
                 mElements++;
             } else {
@@ -54,6 +55,7 @@ public class SearchSet {
         } else if (i < mHead.getValue()) {
             if (mHead.getLeft() == null) {
                 BinaryTreeNode temp = new BinaryTreeNode(i);
+                temp.setRight(mHead);
                 mHead.setLeft(temp);
                 mElements++;
             } else {
@@ -67,31 +69,33 @@ public class SearchSet {
     }
     public boolean contains(int i) {
         boolean boo = false;
-        if (mHead == null) {
-            boo = false;
-        }
-        int j = mHead.getValue();
-        if (i == j) {
-            boo = true;
-        } else if (i > j) {
-            mHead = mHead.getRight();
-            contains(i);
-        } else {
-            mHead = mHead.getLeft();
-            contains(i);
+        while (true){
+            if (mHead == null) {
+                break;
+            }
+            else {
+                int j = mHead.getValue();
+                if (i == j) {
+                    boo = true;
+                    break;
+                } else if (i > j) {
+                    mHead = mHead.getRight();
+                } else {
+                    mHead = mHead.getLeft();
+                }
+            }
         }
         return boo;
     }
     public static void main(String[] args) {
         SearchSet searchset = new SearchSet();
         Scanner input = new Scanner(System.in);
-        while(true){
+        while(true) {
             System.out.println("Enter numbers to insert into the binary tree, x to advance to next stage of checking if a number is in");
             String inputString = input.nextLine();
-            if(inputString.equals("x")){
+            if (inputString.equals("x")) {
                 break;
-            }
-            else{
+            } else {
                 searchset.insert(Integer.parseInt(inputString));
             }
         }

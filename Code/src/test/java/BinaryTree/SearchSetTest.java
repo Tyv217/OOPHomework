@@ -25,7 +25,8 @@ public class SearchSetTest{
         searchset.insert(4);
         searchset.insert(5);
         searchset.insert(6);
-        for(int x = 3; x <= 6; x++){
+        searchset.insert(7);
+        for(int x = 3; x <= 7; x++){
             assertThat(searchset.contains(x)).isTrue();
         }
     }

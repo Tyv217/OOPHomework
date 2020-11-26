@@ -1,21 +1,72 @@
 package ArrayList;
 
-import java.util.AbstractList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
-import java.util.stream.Stream;
 
-public class ArrayList<T> extends AbstractList<T> {
+public class ArrayList<T> extends AbstractList<T> implements Iterable<T>, Collection<T> {
     private T[] storedArray;
     private int numberOfElements    ;
     @Override
     public T get(int index) {
         return storedArray[index];
+    }
+
+    @Override
+    public T set(int index, T element){
+        T oldValue = storedArray[index];
+        storedArray[index] = element;
+        return oldValue;
+    }
+
+    @Override
+    public boolean add(T element){
+        if(numberOfElements == 0){
+            Object[] newArray = new Object[1];
+            newArray[0] = element;
+            storedArray = (T[]) newArray;
+            numberOfElements = 1;
+        }
+        else if(numberOfElements == storedArray.length){
+            Object[] newArray = new Object[numberOfElements*2];
+            for(int x = 0; x < numberOfElements; x++){
+                newArray[x] = storedArray[x];
+            }
+            newArray[numberOfElements] = element;
+            storedArray = (T[])newArray;
+            numberOfElements ++;
+        }
+        else{
+            storedArray[numberOfElements] = element;
+            numberOfElements ++;
+        }
+        return true;
+    }
+
+    @Override
+    public void clear(){
+        Object[] newArray = new Object[0];
+        storedArray = (T[]) newArray;
+        numberOfElements = 0;
+    }
+
+    @Override
+    public T remove(int index){
+        Object[] newArray = new Object[numberOfElements-1];
+        int x = 0;
+        T element = null;
+        for(int y = 0; y < numberOfElements; y++){
+            if(y == index){
+                element = storedArray[y];
+                continue;
+            }
+            else{
+                newArray[x] = storedArray[y];
+                x++;
+            }
+        }
+        numberOfElements--;
+        return element;
     }
 
     @Override
@@ -29,37 +80,12 @@ public class ArrayList<T> extends AbstractList<T> {
     }
 
     @Override
-    public Stream<T> stream() {
-        return null;
-    }
-
-    @Override
-    public Stream<T> parallelStream() {
-        return null;
-    }
-
-    @Override
     public int size() {
         return numberOfElements;
     }
 
     @Override
     public <T1> T1[] toArray(IntFunction<T1[]> generator) {
-        return null;
-    }
-
-    @Override
-    public boolean removeIf(Predicate<? super T> filter) {
-        return false;
-    }
-
-    @Override
-    public void replaceAll(UnaryOperator<T> operator) {
-
-    }
-
-    @Override
-    public void sort(Comparator<? super T> c) {
-
+        return (T1[]) storedArray.clone();
     }
 }
